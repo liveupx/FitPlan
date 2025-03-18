@@ -49,4 +49,3 @@ This project is open source and available under the MIT License.
 ## Acknowledgments
 
 - Built with [Shadcn/UI](https://ui.shadcn.com/) components
-- Hosted on [Replit](https://replit.com)
