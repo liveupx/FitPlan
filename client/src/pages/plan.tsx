@@ -1,9 +1,10 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import PlanView from "@/components/plan-view";
 import { AlertCircle } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import type { User } from "@shared/schema";
 
 export default function Plan() {
@@ -11,6 +12,13 @@ export default function Plan() {
 
   const { data: user, isLoading, error } = useQuery<User>({
     queryKey: ["/api/users", id],
+    queryFn: async () => {
+      const response = await fetch(`/api/users/${id}`);
+      if (!response.ok) {
+        throw new Error(`Failed to load user data: ${response.statusText}`);
+      }
+      return response.json();
+    }
   });
 
   if (isLoading) {
@@ -26,7 +34,10 @@ export default function Plan() {
       <div className="p-8">
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription>Failed to load plan</AlertDescription>
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            {error instanceof Error ? error.message : "Failed to load plan"}
+          </AlertDescription>
         </Alert>
       </div>
     );
@@ -37,7 +48,22 @@ export default function Plan() {
       <div className="p-8">
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Not Found</AlertTitle>
           <AlertDescription>User not found</AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
+
+  if (!user.dietPlan || !user.exercisePlan) {
+    return (
+      <div className="p-8">
+        <Alert>
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Plan Generation in Progress</AlertTitle>
+          <AlertDescription>
+            Your personalized plan is being generated. Please refresh the page in a few moments.
+          </AlertDescription>
         </Alert>
       </div>
     );

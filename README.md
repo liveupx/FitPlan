@@ -1,10 +1,8 @@
+
 # FitPlan Pro
 
 A personalized fitness and diet planning application that creates custom workout and nutrition plans based on individual needs, goals, and physical conditions.
 
-![Alt text](screenshot.png)
-
----
 ## Features
 
 - Personalized diet and exercise planning
@@ -51,3 +49,4 @@ This project is open source and available under the MIT License.
 ## Acknowledgments
 
 - Built with [Shadcn/UI](https://ui.shadcn.com/) components
+- Hosted on [Replit](https://replit.com)
